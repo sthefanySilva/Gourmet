@@ -1,0 +1,99 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="./css/estilo1.css"/>
+		<script src="./JS/jquery.min.js"></script>
+		<script>
+			$(function() {
+				var servico="http://botanicapp.com.br/receitas_teste.php";
+				
+				var $xhr=$.get(servico);
+				
+				$xhr.done(function(dado){
+					var receitaArray= JSON.parse(dado);
+					
+					$.each( receitaArray, function(index, receita){
+					
+					var $ingredientes = $("<ul/>");
+					$.each(receita.ingredientes, function(i, obj){
+					console.log(obj);
+						$ingredientes.append($("<li />").text(obj))				 
+					});
+					
+					var $preparo = $("<ul/>");
+					$.each(receita.preparo, function(i, obj){
+					console.log(obj);
+						$preparo.append($("<li />").text(obj))				 
+					});
+					
+						
+						$(".receitas")
+							.append($("<div />")
+								.addClass("cardapio")
+								.append($("<div />")
+									.addClass("receita")
+									.append($("<div/>")
+										.addClass("nome")
+										.append($("<h1/>")
+											.text(receita.nome)
+										)
+									)
+									.append($("<div />")
+									.addClass("corpo")
+									.append($("<div />")
+										.addClass("imagem")
+										.append($("<img/>")
+											.addClass("figura")
+											.attr("src",receita.foto)
+										)
+									)
+									.append($("<div/>")
+										.addClass("detalhes")
+											.append($("<div/>")
+												.addClass("ingredientes")
+												.append($("<p/>")
+													.text("Ingredientes"))
+												.append($ingredientes)
+											)
+											.append($("<div/>")
+												.addClass("preparo")
+												.append($("<p/>")
+													.text("Preparo"))
+												.append($preparo)
+											)	
+									)
+									.append($("<div />")
+										.addClass("descricao")
+										.append($("<p/>")
+											.addClass("resumo")
+											.text(receita.descricao)
+										)
+									)
+									)
+								)
+							)
+					});
+					
+					
+				});			
+				$xhr.fail(function(dado){
+						console.log(dado);
+						$("#erro").val("Erro");
+					});
+					
+					
+			});
+		</script>
+	</head>
+	<body>
+		<div class="cabe"></div>
+		<div class="fundo">
+			<div class="texto">
+				<div class="titulo">
+				<h2>Gourmet</h2>
+				</div>
+			</div>
+		</div>
+		
+		<div class="receitas"></div>
+	</body>
+</html>
